@@ -2,8 +2,11 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
+const cors = require('cors'); 
 const PORT = 3000;
 const path = require('path'); 
+
+app.use(cors());
 
 app.use(express.static(path.join(__dirname)));
 
