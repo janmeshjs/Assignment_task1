@@ -8,27 +8,9 @@ const path = require('path');
 app.use(cors());
 
 app.use(express.static(path.join(__dirname)));
-axios.defaults.baseURL = 'https://s3.amazonaws.com/open-to-cors';
 
-app.get('/products', async (req, res) => {
-  try {
-
-    const response = await axios.get('/assignment.json');
-    const responseData = response.data;
-
-    if (!responseData.products || typeof responseData.products !== 'object') {
-      throw new Error('Invalid data format');
-    }
-
-    const products = Object.values(responseData.products);
-
-    const sortedProducts = products.sort((a, b) => b.popularity - a.popularity);
-
-    res.json(sortedProducts);
-  } catch (error) {
-    console.error('Error fetching data:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
