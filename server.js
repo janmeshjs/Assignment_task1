@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -9,11 +8,12 @@ const path = require('path');
 app.use(cors());
 
 app.use(express.static(path.join(__dirname)));
-
+axios.defaults.baseURL = 'https://s3.amazonaws.com/open-to-cors';
 
 app.get('/products', async (req, res) => {
   try {
-    const response = await axios.get('https://s3.amazonaws.com/open-to-cors/assignment.json');
+
+    const response = await axios.get('/assignment.json');
     const responseData = response.data;
 
     if (!responseData.products || typeof responseData.products !== 'object') {
@@ -22,7 +22,6 @@ app.get('/products', async (req, res) => {
 
     const products = Object.values(responseData.products);
 
-    // Sort products by descending popularity
     const sortedProducts = products.sort((a, b) => b.popularity - a.popularity);
 
     res.json(sortedProducts);
